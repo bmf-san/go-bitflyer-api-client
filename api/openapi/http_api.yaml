@@ -1,0 +1,1790 @@
+openapi: 3.0.0
+info:
+  title: bitFlyer Lightning API
+  version: v1
+  description: "bitFlyer Lightning HTTP API\u306E OpenAPI 3.0 \u8A2D\u5B9A"
+servers:
+  - url: https://api.bitflyer.com
+    description: "\u30D3\u30C3\u30C8\u30D5\u30E9\u30A4\u30E4 API\u30B5\u30FC\u30D0\u30FC"
+paths:
+  /v1/getmarkets:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (JP)"
+      description: "\u5229\u7528\u53EF\u80FD\u306A\u30DE\u30FC\u30B1\u30C3\u30C8\u306E\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/markets:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (JP)"
+      description: "\u5229\u7528\u53EF\u80FD\u306A\u30DE\u30FC\u30B1\u30C3\u30C8\u306E\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/getmarkets/usa:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (USA)"
+      description: "bitFlyer USA\u306E\u30DE\u30FC\u30B1\u30C3\u30C8\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/markets/usa:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (USA)"
+      description: "bitFlyer USA\u306E\u30DE\u30FC\u30B1\u30C3\u30C8\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/getmarkets/eu:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (EU)"
+      description: "bitFlyer Europe\u306E\u30DE\u30FC\u30B1\u30C3\u30C8\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/markets/eu:
+    get:
+      summary: "\u5E02\u5834\u4E00\u89A7\u53D6\u5F97 (EU)"
+      description: "bitFlyer Europe\u306E\u30DE\u30FC\u30B1\u30C3\u30C8\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Market"
+  /v1/getboard:
+    get:
+      summary: "\u677F\u60C5\u5831\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u677F\u60C5\u5831 (bid/ask) \u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+  /v1/board:
+    get:
+      summary: "\u677F\u60C5\u5831\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u677F\u60C5\u5831 (bid/ask) \u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+  /v1/getticker:
+    get:
+      summary: "Ticker\u60C5\u5831\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E Ticker \u60C5\u5831\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticker"
+  /v1/ticker:
+    get:
+      summary: "Ticker\u60C5\u5831\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E Ticker \u60C5\u5831\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ticker"
+  /v1/getexecutions:
+    get:
+      summary: "\u5E02\u5834\u7D4C\u6E08\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u6700\u65B0\u306E\u7D4C\u6E08\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketExecution"
+  /v1/executions:
+    get:
+      summary: "\u5E02\u5834\u7D4C\u6E08\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u6700\u65B0\u306E\u7D4C\u6E08\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketExecution"
+  /v1/getboardstate:
+    get:
+      summary: "\u677F\u72B6\u614B\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u677F\u306E\u72B6\u614B\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardState"
+  /v1/gethealth:
+    get:
+      summary: "\u53D6\u5F97\u6240\u72B6\u614B\u306E\u53D6\u5F97"
+      description: "\u53D6\u5F97\u6240(\u53D7\u6CE8\u7CFB)\u306E\u73FE\u5728\u306E\u72B6\u614B\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeHealth"
+  /v1/getfundingrate:
+    get:
+      summary: "\u8CC7\u91D1\u8CAF\u7A4D\u7387\u306E\u53D6\u5F97"
+      description: "\u6B21\u56DE\u9069\u7528\u4E88\u5B9A\u306E\u8CC7\u91D1\u8CAF\u7A4D\u7387\u304A\u3088\u3073\u9069\u7528\u6642\u9593\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundingRate"
+  /v1/getcorporateleverage:
+    get:
+      summary: "\u6700\u5927\u30EC\u30D0\u30EC\u30C3\u30B8(\u6CD5\u4EBA)\u306E\u53D6\u5F97"
+      description: "\u6CD5\u4EBA\u53E3\u5EA7\u5411\u3051\u306E\u73FE\u884C\u304A\u3088\u3073\u6B21\u56DE\u9069\u7528\u4E88\u5B9A\u306E\u6700\u5927\u30EC\u30D0\u30EC\u30C3\u30B8\u5024\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CorporateLeverage"
+  /v1/getchats:
+    get:
+      summary: "\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u306E\u53D6\u5F97 (JP)"
+      description: "Lightning (JP)\u306E\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/from_date"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+  /v1/getchats/usa:
+    get:
+      summary: "\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u306E\u53D6\u5F97 (USA)"
+      description: "Lightning (USA)\u306E\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/from_date"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+  /v1/getchats/eu:
+    get:
+      summary: "\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u306E\u53D6\u5F97 (EU)"
+      description: "Lightning (EU)\u306E\u30C1\u30E3\u30C3\u30C8\u30ED\u30B0\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      parameters:
+        - $ref: "#/components/parameters/from_date"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+  /v1/me/getpermissions:
+    get:
+      summary: "API\u30AD\u30FC\u6A29\u9650\u306E\u53D6\u5F97"
+      description: "API\u30AD\u30FC\u3067\u5229\u7528\u53EF\u80FD\u306A\u975E\u516C\u958BAPI\u306E\u4E00\u89A7\u3092\u8FD4\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/me/getbalance:
+    get:
+      summary: "\u8CC7\u7523\u6B8B\u9AD8\u306E\u53D6\u5F97"
+      description: "\u30A2\u30AB\u30A6\u30F3\u30C8\u306E\u8CC7\u7523\u6B8B\u9AD8\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Balance"
+  /v1/me/getcollateral:
+    get:
+      summary: "\u8A2D\u5B9A\u60C5\u5831\u306E\u53D6\u5F97"
+      description: "\u8CAC\u91D1\u53F0\u306E\u8CAC\u91D1\u8A2D\u5B9A\u60C5\u5831\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collateral"
+  /v1/me/getcollateralaccounts:
+    get:
+      summary: "\u8CAC\u91D1\u9810\u3051\u5165\u984D\u306E\u53D6\u5F97"
+      description: "\u901A\u8CA8\u5225\u306E\u8CAC\u91D1\u9810\u3051\u5165\u984D\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CollateralAccount"
+  /v1/me/getaddresses:
+    get:
+      summary: "\u6697\u53F7\u8CC7\u7523\u5165\u91D1\u30A2\u30C9\u30EC\u30B9\u306E\u53D6\u5F97"
+      description: "\u6697\u53F7\u8CC7\u7523\u5165\u91D1\u7528\u306E\u30A2\u30C9\u30EC\u30B9\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Address"
+  /v1/me/getcoinins:
+    get:
+      summary: "\u6697\u53F7\u8CC7\u7523\u5165\u91D1\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u6697\u53F7\u8CC7\u7523\u306E\u5165\u91D1\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CoinIn"
+  /v1/me/getcoinouts:
+    get:
+      summary: "\u6697\u53F7\u8CC7\u7523\u9001\u4FE1\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u6697\u53F7\u8CC7\u7523\u306E\u9001\u4FE1(\u51FA\u91D1)\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CoinOut"
+  /v1/me/getbankaccounts:
+    get:
+      summary: "\u9280\u884C\u53E3\u5EA7\u4E00\u89A7\u306E\u53D6\u5F97"
+      description: "\u767B\u9332\u6E08\u307F\u306E\u9280\u884C\u53E3\u5EA7\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BankAccount"
+  /v1/me/getdeposits:
+    get:
+      summary: "\u5165\u91D1\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u65E5\u672C\u5186\u306E\u5165\u91D1\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CashDeposit"
+  /v1/me/withdraw:
+    post:
+      summary: "\u51FA\u91D1\u306E\u767A\u884C"
+      description: "\u65E5\u672C\u5186\u3092\u51FA\u91D1\u3057\u307E\u3059\u3002(\u8981\u4E8C\u6B21\u8A8D\u8A3C)"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WithdrawResponse"
+  /v1/me/getwithdrawals:
+    get:
+      summary: "\u51FA\u91D1\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u51FA\u91D1\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+        - $ref: "#/components/parameters/message_id"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Withdrawal"
+  /v1/me/sendchildorder:
+    post:
+      summary: "\u65B0\u898F\u5B50\u6CE8\u6587"
+      description: "\u65B0\u898F\u306E\u5B50\u6CE8\u6587(\u73FE\u7269/\u5883\u754CFX)\u3092\u767A\u6CE8\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewOrderRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChildOrderResult"
+  /v1/me/cancelchildorder:
+    post:
+      summary: "\u5B50\u6CE8\u6587\u306E\u30AD\u30E3\u30F3\u30BB\u30EB"
+      description: "\u6307\u5B9A\u3057\u305F\u5B50\u6CE8\u6587\u3092\u30AD\u30E3\u30F3\u30BB\u30EB\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelChildOrderRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+  /v1/me/sendparentorder:
+    post:
+      summary: "\u65B0\u898F\u89AA\u6CE8\u6587"
+      description: "\u7279\u6B8A\u6CE8\u6587(\u89AA\u6CE8\u6587)\u3092\u767A\u6CE8\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewParentOrderRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParentOrderResult"
+  /v1/me/cancelparentorder:
+    post:
+      summary: "\u89AA\u6CE8\u6587\u306E\u30AD\u30E3\u30F3\u30BB\u30EB"
+      description: "\u6307\u5B9A\u3057\u305F\u89AA\u6CE8\u6587\u3092\u30AD\u30E3\u30F3\u30BB\u30EB\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelParentOrderRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+  /v1/me/cancelallchildorders:
+    post:
+      summary: "\u5168\u6CE8\u6587\u306E\u30AD\u30E3\u30F3\u30BB\u30EB"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u5168\u3066\u306E\u672A\u7E70\u8CFC\u6CE8\u6587\u3092\u30AD\u30E3\u30F3\u30BB\u30EB\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelAllOrdersRequest"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+  /v1/me/getchildorders:
+    get:
+      summary: "\u5B50\u6CE8\u6587\u4E00\u89A7\u306E\u53D6\u5F97"
+      description: "\u5B50\u6CE8\u6587\u306E\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+        - $ref: "#/components/parameters/child_order_state"
+        - $ref: "#/components/parameters/child_order_id"
+        - $ref: "#/components/parameters/child_order_acceptance_id"
+        - $ref: "#/components/parameters/parent_order_id"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChildOrder"
+  /v1/me/getparentorders:
+    get:
+      summary: "\u89AA\u6CE8\u6587\u4E00\u89A7\u306E\u53D6\u5F97"
+      description: "\u89AA\u6CE8\u6587\u306E\u4E00\u89A7\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+        - $ref: "#/components/parameters/parent_order_state"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ParentOrder"
+  /v1/me/getparentorder:
+    get:
+      summary: "\u89AA\u6CE8\u6587\u8A73\u7D30\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u89AA\u6CE8\u6587\u306E\u8A73\u7D30\u60C5\u5831\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/parent_order_id"
+        - $ref: "#/components/parameters/parent_order_acceptance_id"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParentOrderDetail"
+  /v1/me/getexecutions:
+    get:
+      summary: "\u7D4C\u6E08\u5C65\u6B74\u306E\u53D6\u5F97(\u30E6\u30FC\u30B6\u30FC)"
+      description: "\u30A2\u30AB\u30A6\u30F3\u30C8\u306E\u7D4C\u6E08\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+        - $ref: "#/components/parameters/child_order_id"
+        - $ref: "#/components/parameters/child_order_acceptance_id"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Execution"
+  /v1/me/getbalancehistory:
+    get:
+      summary: "\u6B8B\u9AD8\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u6B8B\u9AD8\u5909\u52D5\u306E\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/currency_code"
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BalanceHistory"
+  /v1/me/getpositions:
+    get:
+      summary: "\u5EFA\u7389\u4E00\u89A7\u306E\u53D6\u5F97"
+      description: "\u672A\u6E08\u88DC\u7D66\u7684\u306A\u8CAC\u91D1\u8CC7\u7523\u306E\u4E00\u89A7 (CFD) \u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Position"
+  /v1/me/getcollateralhistory:
+    get:
+      summary: "\u8CAC\u91D1\u5909\u52D5\u5C65\u6B74\u306E\u53D6\u5F97"
+      description: "\u8CAC\u91D1\u306E\u5909\u52D5\u5C65\u6B74\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/count"
+        - $ref: "#/components/parameters/before"
+        - $ref: "#/components/parameters/after"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CollateralHistory"
+  /v1/me/gettradingcommission:
+    get:
+      summary: "\u53D6\u5F97\u624B\u6570\u6599\u7387\u306E\u53D6\u5F97"
+      description: "\u6307\u5B9A\u3057\u305F\u30D7\u30ED\u30C0\u30AF\u30C8\u306E\u53D6\u5F97\u624B\u6570\u6599\u7387\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+      security:
+        - ApiKeyAuth: []
+          ApiTimestamp: []
+          ApiSign: []
+      parameters:
+        - $ref: "#/components/parameters/product_code"
+      responses:
+        "200":
+          description: "\u6210\u529F"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TradingCommission"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: ACCESS-KEY
+      description: "API\u30AD\u30FC (ACCESS-KEY: \u958B\u767A\u8005\u30DA\u30FC\u30B8\u3067\u767A\u884C\u3055\u308C\u305F API\u30AD\u30FC)"
+    ApiTimestamp:
+      type: apiKey
+      in: header
+      name: ACCESS-TIMESTAMP
+      description: "\u30EA\u30AF\u30A8\u30B9\u30C8\u6642\u306E Unix \u30BF\u30A4\u30E0\u30B9\u30BF\u30F3\u30D7"
+    ApiSign:
+      type: apiKey
+      in: header
+      name: ACCESS-SIGN
+      description: "HMAC-SHA256 \u3067\u751F\u6210\u3055\u308C\u308B\u30B7\u30B0\u30CD\u30C1\u30E3 (API\u30B7\u30FC\u30AF\u30EC\u30C3\u30C8\u3092\u4F7F\u7528)"
+  parameters:
+    product_code:
+      name: product_code
+      in: query
+      required: true
+      schema:
+        type: string
+      description: "\u92AD\u5E63\u306E\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9\u3002\u5E02\u5834\u4E00\u89A7API\u3067\u53D6\u5F97\u3067\u304D\u308B\u5024\u3092\u6307\u5B9A\u3057\u307E\u3059\u3002"
+    count:
+      name: count
+      in: query
+      schema:
+        type: integer
+      description: "\u53D6\u5F97\u3059\u308B\u30EC\u30B3\u30FC\u30C9\u6570\u3002\u7701\u7565\u3057\u305F\u5834\u5408\u306F100\u3068\u306A\u308A\u307E\u3059\u3002"
+    before:
+      name: before
+      in: query
+      schema:
+        type: integer
+      description: "ID\u304C\u6307\u5B9A\u3057\u305F\u5024\u3088\u308A\u5C0F\u3055\u3044\u30EC\u30B3\u30FC\u30C9\u3092\u53D6\u5F97"
+    after:
+      name: after
+      in: query
+      schema:
+        type: integer
+      description: "ID\u304C\u6307\u5B9A\u3057\u305F\u5024\u3088\u308A\u5927\u304D\u3044\u30EC\u30B3\u30FC\u30C9\u3092\u53D6\u5F97"
+    child_order_state:
+      name: child_order_state
+      in: query
+      schema:
+        type: string
+        enum:
+          - ACTIVE
+          - COMPLETED
+          - CANCELED
+          - EXPIRED
+          - REJECTED
+      description: "\u62BC\u3055\u3048\u308B\u5834\u5408\u3001\u6307\u5B9A\u3057\u305F\u72B6\u614B\u306E\u307F\u3092\u8FD4\u3057\u307E\u3059\u3002ACTIVE (OPEN \u4E2D\u306E\u6CE8\u6587)\u3001COMPLETED (\u5168\u91CF\u7A3C\u50CD\u6E08\u307F)\u7B49\u304C\u6307\u5B9A\u53EF\u80FD\u3002"
+    parent_order_state:
+      name: parent_order_state
+      in: query
+      schema:
+        type: string
+        enum:
+          - ACTIVE
+          - COMPLETED
+          - CANCELED
+          - EXPIRED
+          - REJECTED
+      description: "\u6307\u5B9A\u3057\u305F\u72B6\u614B\u306E\u307F\u3092\u8FD4\u3057\u307E\u3059\u3002ACTIVE\u3001COMPLETED\u3001CANCELED\u3001EXPIRED\u3001REJECTED \u304C\u6307\u5B9A\u53EF\u80FD\u3002"
+    child_order_id:
+      name: child_order_id
+      in: query
+      schema:
+        type: string
+      description: "\u5B50\u6CE8\u6587\u306EID\u3002"
+    child_order_acceptance_id:
+      name: child_order_acceptance_id
+      in: query
+      schema:
+        type: string
+      description: "API\u767B\u9332ID (\u65B0\u898F\u6CE8\u6587API\u306E\u5E30\u308A\u5024) \u3002"
+    parent_order_id:
+      name: parent_order_id
+      in: query
+      schema:
+        type: string
+      description: "\u89AA\u6CE8\u6587\u306EID\u3002"
+    parent_order_acceptance_id:
+      name: parent_order_acceptance_id
+      in: query
+      schema:
+        type: string
+      description: "API\u767B\u9332ID (\u89AA\u6CE8\u6587API\u306E\u5E30\u308A\u5024)\u3002"
+    currency_code:
+      name: currency_code
+      in: query
+      schema:
+        type: string
+      description: "\u901A\u8CA8\u30B3\u30FC\u30C9\u3002\u7701\u7565\u3057\u305F\u5834\u5408\u306F JPY \u3068\u306A\u308A\u307E\u3059\u3002"
+    from_date:
+      name: from_date
+      in: query
+      schema:
+        type: string
+        format: date-time
+      description: "\u3053\u306E\u65E5\u4EE5\u964D\u306E\u30E1\u30C3\u30BB\u30FC\u30B8\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002\u6307\u5B9A\u306A\u3057\u306E\u5834\u5408\u306F\u76F4\u8FD1\u306E5\u65E5\u5206\u306E\u30ED\u30B0\u3092\u8FD4\u3057\u307E\u3059\u3002"
+    message_id:
+      name: message_id
+      in: query
+      schema:
+        type: string
+      description: "\u51FA\u91D1API\u306E\u5E30\u308A\u5024 (message_id)\u3092\u6307\u5B9A\u3057\u305F\u5834\u5408\u3001\u5BFE\u5FDC\u3059\u308B\u51FA\u91D1\u306E\u72B6\u614B\u3092\u53D6\u5F97\u3057\u307E\u3059\u3002"
+  schemas:
+    Market:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        market_type:
+          type: string
+          description: "\"Spot\" \u307E\u305F\u306F \"FX\""
+          enum:
+            - Spot
+            - FX
+    BoardEntry:
+      type: object
+      properties:
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+    Board:
+      type: object
+      properties:
+        mid_price:
+          type: number
+          format: float
+          description: "\u4E2D\u9593\u4FA1\u683C"
+        bids:
+          type: array
+          description: "\u30D3\u30C3\u30C9\u30EA\u30B9\u30C8"
+          items:
+            $ref: "#/components/schemas/BoardEntry"
+        asks:
+          type: array
+          description: "\u30A2\u30B9\u30AF\u30EA\u30B9\u30C8"
+          items:
+            $ref: "#/components/schemas/BoardEntry"
+    Ticker:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        state:
+          type: string
+          description: "\u30DC\u30FC\u30C9\u72B6\u614B (RUNNING\u3001CLOSED\u7B49)"
+        timestamp:
+          type: string
+          format: date-time
+          description: "UTC\u6642\u9593"
+        tick_id:
+          type: integer
+          description: "\u30C6\u30A3\u30C3\u30AFID"
+        best_bid:
+          type: number
+          format: float
+          description: "\u6700\u9AD8\u4FA1\u683C\u8CB7\u3044\u4FA1"
+        best_ask:
+          type: number
+          format: float
+          description: "\u6700\u4F4E\u4FA1\u683C\u58F2\u308A\u4FA1"
+        best_bid_size:
+          type: number
+          format: float
+          description: "\u6700\u9AD8\u4FA1\u683C\u8CB7\u3044\u4FA1\u306B\u304A\u3051\u308B\u91CF"
+        best_ask_size:
+          type: number
+          format: float
+          description: "\u6700\u4F4E\u4FA1\u683C\u58F2\u308A\u4FA1\u306B\u304A\u3051\u308B\u91CF"
+        total_bid_depth:
+          type: number
+          format: float
+          description: "\u5168\u8CB7\u3044\u6C7A\u6E08\u91CF"
+        total_ask_depth:
+          type: number
+          format: float
+          description: "\u5168\u58F2\u308A\u6C7A\u6E08\u91CF"
+        market_bid_size:
+          type: number
+          format: float
+          description: "\u5E02\u5834\u6210\u308A\u884C\u306E\u8CB7\u6CE8\u6587\u91CF (\u677F\u5408\u308F\u305B\u6642)"
+        market_ask_size:
+          type: number
+          format: float
+          description: "\u5E02\u5834\u6210\u308A\u884C\u306E\u58F2\u6CE8\u6587\u91CF (\u677F\u5408\u308F\u305B\u6642)"
+        ltp:
+          type: number
+          format: float
+          description: "\u6700\u7D42\u53C2\u8003\u4FA1\u683C (LTP)"
+        volume:
+          type: number
+          format: float
+          description: "24\u6642\u9593\u306E\u53CE\u5BB9\u4E0A\u91CF"
+        volume_by_product:
+          type: number
+          format: float
+          description: "24\u6642\u9593\u306E\u53CE\u5BB9\u4E0A\u91CF (\u5BFE\u8C61\u30D7\u30ED\u30C0\u30AF\u30C8)"
+    MarketExecution:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+        exec_date:
+          type: string
+          format: date-time
+          description: "\u6642\u9593"
+        buy_child_order_acceptance_id:
+          type: string
+          description: "\u8CB7\u6CE8\u6587\u306E\u63A5\u53D7ID"
+        sell_child_order_acceptance_id:
+          type: string
+          description: "\u58F2\u6CE8\u6587\u306E\u63A5\u53D7ID"
+    BoardState:
+      type: object
+      properties:
+        health:
+          type: string
+          description: "\u53D6\u5F97\u6240\u72B6\u614B"
+          enum:
+            - NORMAL
+            - BUSY
+            - VERY BUSY
+            - SUPER BUSY
+            - NO ORDER
+            - STOP
+        state:
+          type: string
+          description: "\u30DC\u30FC\u30C9\u72B6\u614B"
+          enum:
+            - RUNNING
+            - CLOSED
+            - STARTING
+            - PREOPEN
+            - CIRCUIT BREAK
+            - MATURED
+        data:
+          type: object
+          description: "\u8A73\u7D30\u30C7\u30FC\u30BF (MATURED\u72B6\u614B\u306E\u307F)"
+          properties:
+            special_quotation:
+              type: number
+              description: "\u7DCF\u6B63\u8A08"
+    ExchangeHealth:
+      type: object
+      properties:
+        status:
+          type: string
+          description: "\u53D6\u5F97\u6240\u72B6\u614B"
+          enum:
+            - NORMAL
+            - BUSY
+            - VERY BUSY
+            - SUPER BUSY
+            - NO ORDER
+            - STOP
+    FundingRate:
+      type: object
+      properties:
+        current_funding_rate:
+          type: number
+          format: float
+          description: "\u73FE\u5728\u306E\u8CC7\u91D1\u8CAF\u7A4D\u7387"
+        next_funding_rate_settledate:
+          type: string
+          format: date-time
+          description: "\u6B21\u56DE\u8CAF\u7A4D\u5B8C\u4E86\u65E5"
+    CorporateLeverage:
+      type: object
+      properties:
+        current_max:
+          type: number
+          format: float
+          description: "\u73FE\u884C\u6700\u5927\u30EC\u30D0\u30EC\u30C3\u30B8"
+        current_startdate:
+          type: string
+          format: date-time
+          description: "\u73FE\u884C\u9069\u7528\u958B\u59CB\u65E5"
+        next_max:
+          type: number
+          format: float
+          description: "\u6B21\u56DE\u9069\u7528\u4E88\u5B9A\u306E\u6700\u5927\u30EC\u30D0\u30EC\u30C3\u30B8"
+        next_startdate:
+          type: string
+          format: date-time
+          description: "\u6B21\u56DE\u9069\u7528\u958B\u59CB\u65E5"
+    ChatMessage:
+      type: object
+      properties:
+        nickname:
+          type: string
+          description: "\u30CB\u30C3\u30AF\u30CD\u30FC\u30E0"
+        message:
+          type: string
+          description: "\u30E1\u30C3\u30BB\u30FC\u30B8\u5185\u5BB9"
+        date:
+          type: string
+          format: date-time
+          description: "\u6295\u7A3F\u6642\u9593"
+    Balance:
+      type: object
+      properties:
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u7DCB\u8A08\u91D1\u984D"
+        available:
+          type: number
+          format: float
+          description: "\u5229\u7528\u53EF\u80FD\u91D1\u984D"
+    Collateral:
+      type: object
+      properties:
+        collateral:
+          type: number
+          format: float
+          description: "\u5B58\u5165\u984D(JPY)"
+        open_position_pnl:
+          type: number
+          format: float
+          description: "\u30DD\u30B8\u30B7\u30E7\u30F3\u30D7\u30ED\u30D5\u30A3\u30C3\u30C8/\u30ED\u30B9"
+        require_collateral:
+          type: number
+          format: float
+          description: "\u5FC5\u8981\u8A2D\u5B9A"
+        keep_rate:
+          type: number
+          format: float
+          description: "\u7DAD\u6301\u7387"
+        margin_call_amount:
+          type: number
+          format: float
+          description: "\u30DE\u30FC\u30B8\u30F3\u8A08\u5473\u91D1"
+        margin_call_due_date:
+          type: string
+          format: date-time
+          description: "\u8A08\u5473\u91D1\u671F\u9650"
+    CollateralAccount:
+      type: object
+      properties:
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u984D"
+    Address:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "\u7A2E\u5225 (NORMAL \u306A\u3069)"
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        address:
+          type: string
+          description: "\u30A2\u30C9\u30EC\u30B9"
+    CoinIn:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        order_id:
+          type: string
+          description: order_id
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u984D"
+        address:
+          type: string
+          description: "\u30A2\u30C9\u30EC\u30B9"
+        tx_hash:
+          type: string
+          description: "Tx\u30CF\u30C3\u30B7\u30E5"
+        status:
+          type: string
+          description: "\"PENDING\"\u307E\u305F\u306F\"COMPLETED\""
+        event_date:
+          type: string
+          format: date-time
+          description: "\u65E5\u6642"
+    CoinOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        order_id:
+          type: string
+          description: order_id
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u984D"
+        address:
+          type: string
+          description: "\u9001\u4FE1\u5148\u30A2\u30C9\u30EC\u30B9"
+        tx_hash:
+          type: string
+          description: "Tx\u30CF\u30C3\u30B7\u30E5"
+        fee:
+          type: number
+          format: float
+          description: "\u624B\u6570\u6599"
+        additional_fee:
+          type: number
+          format: float
+          description: "\u5229\u7528\u6599"
+        status:
+          type: string
+          description: "\"PENDING\"\u307E\u305F\u306F\"COMPLETED\""
+        event_date:
+          type: string
+          format: date-time
+          description: "\u65E5\u6642"
+    BankAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        is_verified:
+          type: boolean
+          description: "\u8A8D\u8A3C\u6E08\u307F\u304B"
+        bank_name:
+          type: string
+          description: "\u9280\u884C\u540D"
+        branch_name:
+          type: string
+          description: "\u652F\u5E97\u540D"
+        account_type:
+          type: string
+          description: "\u53E3\u5EA7\u7A2E\u5225"
+        account_number:
+          type: string
+          description: "\u53E3\u5EA7\u756A\u53F7"
+        account_name:
+          type: string
+          description: "\u53E3\u5EA7\u540D\u7FA9"
+    CashDeposit:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        order_id:
+          type: string
+          description: order_id
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u984D"
+        status:
+          type: string
+          description: "\"PENDING\"\u307E\u305F\u306F\"COMPLETED\""
+        event_date:
+          type: string
+          format: date-time
+          description: "\u65E5\u6642"
+    Withdrawal:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        order_id:
+          type: string
+          description: order_id
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        amount:
+          type: number
+          format: float
+          description: "\u984D"
+        status:
+          type: string
+          description: "\"PENDING\"\u307E\u305F\u306F\"COMPLETED\""
+        event_date:
+          type: string
+          format: date-time
+          description: "\u65E5\u6642"
+    NewOrderRequest:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        child_order_type:
+          type: string
+          description: "\"LIMIT\"\u307E\u305F\u306F\"MARKET\""
+          enum:
+            - LIMIT
+            - MARKET
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+          enum:
+            - BUY
+            - SELL
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C (\u30AA\u30FC\u30C0\u30FC\u30BF\u30A4\u30D7\u304C LIMIT \u306E\u5834\u5408\u5FC5\u9808)"
+        size:
+          type: number
+          format: float
+          description: "\u6CE8\u6587\u91CF"
+        minute_to_expire:
+          type: integer
+          description: "\u6709\u52B9\u671F\u9650(\u5206)\u3002\u6700\u5927\u502443200\u3002\u7701\u7565\u6642\u306F43200\u3002"
+        time_in_force:
+          type: string
+          description: "\"GTC\"\u3001\"IOC\"\u3001\"FOK\"\u306E\u3044\u305A\u308C\u304B"
+          enum:
+            - GTC
+            - IOC
+            - FOK
+      required:
+        - product_code
+        - child_order_type
+        - side
+        - size
+    ChildOrderResult:
+      type: object
+      properties:
+        child_order_acceptance_id:
+          type: string
+          description: "\u65B0\u898F\u6CE8\u6587\u306E\u63A5\u53D7ID"
+    CancelChildOrderRequest:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        child_order_id:
+          type: string
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u5BFE\u8C61\u306E\u5B50\u6CE8\u6587ID"
+        child_order_acceptance_id:
+          type: string
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u5BFE\u8C61\u306E API\u63A5\u53D7ID"
+      required:
+        - product_code
+    ParentOrderParameter:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        condition_type:
+          type: string
+          description: "\u51E6\u7406\u6761\u4EF6"
+          enum:
+            - LIMIT
+            - MARKET
+            - STOP
+            - STOP_LIMIT
+            - TRAIL
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+          enum:
+            - BUY
+            - SELL
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C (condition_type\u304C LIMIT/STOP_LIMIT \u306E\u5834\u5408\u5FC5\u9808)"
+        trigger_price:
+          type: number
+          format: float
+          description: "\u30C8\u30EA\u30AC\u30FC\u4FA1\u683C (condition_type\u304C STOP/STOP_LIMIT \u306E\u5834\u5408\u5FC5\u9808)"
+        offset:
+          type: integer
+          description: "\u30C8\u30EC\u30FC\u30E9\u30FC\u5E45 (condition_type\u304C TRAIL \u306E\u5834\u5408\u5FC5\u9808)"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+      required:
+        - product_code
+        - condition_type
+        - side
+        - size
+    NewParentOrderRequest:
+      type: object
+      properties:
+        order_method:
+          type: string
+          description: "\u6CE8\u6587\u65B9\u6CD5 (SIMPLE, IFD, OCO, IFDOCO)"
+          enum:
+            - SIMPLE
+            - IFD
+            - OCO
+            - IFDOCO
+        minute_to_expire:
+          type: integer
+          description: "\u6709\u52B9\u671F\u9650(\u5206)\u3002\u6700\u5927\u502443200\u3002\u7701\u7565\u6642\u306F43200\u3002"
+        time_in_force:
+          type: string
+          description: "\"GTC\"\u3001\"IOC\"\u3001\"FOK\"\u306E\u3044\u305A\u308C\u304B"
+          enum:
+            - GTC
+            - IOC
+            - FOK
+        parameters:
+          type: array
+          description: "\u30AA\u30FC\u30C0\u30FC\u8A2D\u5B9A\u30D1\u30E9\u30E1\u30FC\u30BF\u306E\u914D\u5217"
+          items:
+            $ref: "#/components/schemas/ParentOrderParameter"
+      required:
+        - parameters
+    ParentOrderResult:
+      type: object
+      properties:
+        parent_order_acceptance_id:
+          type: string
+          description: "\u65B0\u898F\u89AA\u6CE8\u6587\u306E\u63A5\u53D7ID"
+    CancelParentOrderRequest:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        parent_order_id:
+          type: string
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u5BFE\u8C61\u306E\u89AA\u6CE8\u6587ID"
+        parent_order_acceptance_id:
+          type: string
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u5BFE\u8C61\u306E API\u63A5\u53D7ID"
+      required:
+        - product_code
+    CancelAllOrdersRequest:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u5BFE\u8C61\u306E\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+      required:
+        - product_code
+    ChildOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        child_order_id:
+          type: string
+          description: "\u5B50\u6CE8\u6587ID"
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+          enum:
+            - BUY
+            - SELL
+        child_order_type:
+          type: string
+          description: "\"LIMIT\"\u307E\u305F\u306F\"MARKET\""
+          enum:
+            - LIMIT
+            - MARKET
+        price:
+          type: number
+          format: float
+          description: "\u6CE8\u6587\u4FA1\u683C"
+        average_price:
+          type: number
+          format: float
+          description: "\u5E73\u5747\u6E05\u7B97\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u6CE8\u6587\u91CF"
+        child_order_state:
+          type: string
+          description: "\u6CE8\u6587\u72B6\u614B"
+          enum:
+            - ACTIVE
+            - COMPLETED
+            - CANCELED
+            - EXPIRED
+            - REJECTED
+        expire_date:
+          type: string
+          format: date-time
+          description: "\u6709\u52B9\u671F\u9650"
+        child_order_date:
+          type: string
+          format: date-time
+          description: "\u6CE8\u6587\u65E5\u6642"
+        child_order_acceptance_id:
+          type: string
+          description: "API\u63A5\u53D7ID"
+        outstanding_size:
+          type: number
+          format: float
+          description: "\u672A\u7E70\u8CFC\u91CF"
+        cancel_size:
+          type: number
+          format: float
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u91CF"
+        executed_size:
+          type: number
+          format: float
+          description: "\u5B9F\u884C\u6E08\u307F\u91CF"
+        total_commission:
+          type: number
+          format: float
+          description: "\u53D6\u5F97\u624B\u6570\u6599"
+        time_in_force:
+          type: string
+          description: "\"GTC\"\u3001\"IOC\"\u3001\"FOK\""
+          enum:
+            - GTC
+            - IOC
+            - FOK
+    ParentOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        parent_order_id:
+          type: string
+          description: "\u89AA\u6CE8\u6587ID"
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+        parent_order_type:
+          type: string
+          description: "\u89AA\u6CE8\u6587\u65B9\u5F0F/\u6761\u4EF6"
+          enum:
+            - LIMIT
+            - MARKET
+            - STOP
+            - STOP_LIMIT
+            - TRAIL
+            - IFD
+            - OCO
+            - IFDOCO
+        price:
+          type: number
+          format: float
+          description: "\u53C2\u8003\u4FA1\u683C"
+        average_price:
+          type: number
+          format: float
+          description: "\u5E73\u5747\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+        parent_order_state:
+          type: string
+          description: "\u6CE8\u6587\u72B6\u614B"
+          enum:
+            - ACTIVE
+            - COMPLETED
+            - CANCELED
+            - EXPIRED
+            - REJECTED
+        expire_date:
+          type: string
+          format: date-time
+          description: "\u6709\u52B9\u671F\u9650"
+        parent_order_date:
+          type: string
+          format: date-time
+          description: "\u6CE8\u6587\u65E5\u6642"
+        parent_order_acceptance_id:
+          type: string
+          description: "API\u63A5\u53D7ID"
+        outstanding_size:
+          type: number
+          format: float
+          description: "\u672A\u7E70\u8CFC\u91CF"
+        cancel_size:
+          type: number
+          format: float
+          description: "\u30AD\u30E3\u30F3\u30BB\u30EB\u91CF"
+        executed_size:
+          type: number
+          format: float
+          description: "\u5B9F\u884C\u6E08\u307F\u91CF"
+        total_commission:
+          type: number
+          format: float
+          description: "\u53D6\u5F97\u624B\u6570\u6599"
+    ParentOrderDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        parent_order_id:
+          type: string
+          description: "\u89AA\u6CE8\u6587ID"
+        order_method:
+          type: string
+          description: "\u6CE8\u6587\u65B9\u6CD5"
+          enum:
+            - SIMPLE
+            - IFD
+            - OCO
+            - IFDOCO
+        minute_to_expire:
+          type: integer
+          description: "\u6709\u52B9\u671F\u9650(\u5206)"
+        parameters:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParentOrderParameter"
+        parent_order_acceptance_id:
+          type: string
+          description: "API\u63A5\u53D7ID"
+    Execution:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        child_order_id:
+          type: string
+          description: "\u5B50\u6CE8\u6587ID"
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+        commission:
+          type: number
+          format: float
+          description: "\u624B\u6570\u6599"
+        exec_date:
+          type: string
+          format: date-time
+          description: "\u6642\u9593"
+        child_order_acceptance_id:
+          type: string
+          description: "API\u63A5\u53D7ID"
+    BalanceHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        trade_date:
+          type: string
+          format: date-time
+          description: "\u53E4\u3044\u30C7\u30FC\u30BF(JST)"
+        event_date:
+          type: string
+          format: date-time
+          description: "\u53D6\u5F97\u6240\u6642\u9593(UTC)"
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        trade_type:
+          type: string
+          description: "\u53D6\u5F97\u6240\u578B"
+          enum:
+            - BUY
+            - SELL
+            - DEPOSIT
+            - WITHDRAW
+            - FEE
+            - POST_COLL
+            - CANCEL_COLL
+            - PAYMENT
+            - TRANSFER
+        price:
+          type: number
+          format: float
+          description: "\u4FA1\u683C"
+        amount:
+          type: number
+          format: float
+          description: "\u91D1\u984D"
+        quantity:
+          type: number
+          format: float
+          description: "\u6570\u91CF"
+        commission:
+          type: number
+          format: float
+          description: "\u624B\u6570\u6599"
+        balance:
+          type: number
+          format: float
+          description: "\u6B8B\u9AD8"
+        order_id:
+          type: string
+          description: order_id
+    Position:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: "\u30D7\u30ED\u30C0\u30AF\u30C8\u30B3\u30FC\u30C9"
+        side:
+          type: string
+          description: "\"BUY\"\u307E\u305F\u306F\"SELL\""
+        price:
+          type: number
+          format: float
+          description: "\u5E73\u5747\u53C2\u8003\u4FA1\u683C"
+        size:
+          type: number
+          format: float
+          description: "\u91CF"
+        commission:
+          type: number
+          format: float
+          description: "\u624B\u6570\u6599"
+        swap_point_accumulate:
+          type: number
+          format: float
+          description: "\u30B9\u30EF\u30C3\u30D7\u70B9"
+        require_collateral:
+          type: number
+          format: float
+          description: "\u5FC5\u8981\u8A2D\u5B9A"
+        open_date:
+          type: string
+          format: date-time
+          description: "\u4F5C\u6210\u65E5"
+        leverage:
+          type: number
+          format: float
+          description: "\u30EC\u30D0\u30EC\u30C3\u30B8\u7387"
+        pnl:
+          type: number
+          format: float
+          description: "\u30D7\u30ED\u30D5\u30A3\u30C3\u30C8\u6E2C\u5B9A"
+        sfd:
+          type: number
+          format: float
+          description: SFD
+    CollateralHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8"
+        change:
+          type: number
+          format: float
+          description: "\u5909\u52D5\u984D"
+        amount:
+          type: number
+          format: float
+          description: "\u5909\u52D5\u5F8C\u6B8B\u9AD8"
+        reason_code:
+          type: string
+          description: "\u4E8B\u7531\u30B3\u30FC\u30C9"
+        date:
+          type: string
+          format: date-time
+          description: "\u65E5\u6642"
+    TradingCommission:
+      type: object
+      properties:
+        commission_rate:
+          type: number
+          format: float
+          description: "\u624B\u6570\u6599\u7387"
+    WithdrawRequest:
+      type: object
+      properties:
+        currency_code:
+          type: string
+          description: "\u901A\u8CA8 (JPY \u306E\u307F)"
+        bank_account_id:
+          type: integer
+          description: "\u9280\u884C\u53E3\u5EA7ID"
+        amount:
+          type: number
+          format: float
+          description: "\u91D1\u984D"
+        code:
+          type: string
+          description: "\u8A8D\u8A3C\u30B3\u30FC\u30C9 (2FA)"
+      required:
+        - currency_code
+        - bank_account_id
+        - amount
+    WithdrawResponse:
+      type: object
+      properties:
+        message_id:
+          type: string
+          description: "\u53D7\u4ED8ID (message_id)"
