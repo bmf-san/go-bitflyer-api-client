@@ -1,0 +1,468 @@
+asyncapi: '3.0.0'
+info:
+  title: 'bitFlyer Lightning Realtime API'
+  version: '1.0.0'
+  description: |
+    This is the realtime API for bitFlyer Lightning. Two endpoints are available: Socket.IO (WebSocket) and JSON-RPC 2.0 (WebSocket), both providing the same realtime data channels. Public channels can be accessed without authentication, while Private channels require API key authentication.
+
+servers:
+  socketio:
+    host: 'io.lightstream.bitflyer.com'
+    protocol: ws
+    description: |
+      Socket.IO 2.0 (WebSocket) endpoint. Only the `websocket` transport is supported.
+  jsonrpc:
+    host: 'ws.lightstream.bitflyer.com/json-rpc'
+    protocol: ws
+    description: |
+      JSON-RPC 2.0 over WebSocket endpoint. Complies with JSON-RPC 2.0 specification and supports Batch requests.
+
+channels:
+  auth:
+    address: auth
+    messages:
+      auth:
+        name: auth
+        title: Auth Message
+        payload:
+          type: object
+          properties:
+            api_key:
+              type: string
+              description: 'API Key'
+            timestamp:
+              type: integer
+              description: 'Current Unix Timestamp (10 or 13 digits)'
+            nonce:
+              type: string
+              description: 'Random string (16-255 characters)'
+            signature:
+              type: string
+              description: 'Hex string signed with HMAC SHA256 using API Secret'
+          required: [api_key, timestamp, nonce, signature]
+
+  subscribe:
+    address: subscribe
+    messages:
+      subscribe:
+        name: subscribe
+        title: Subscribe Message
+        payload:
+          type: object
+          properties:
+            channel:
+              type: string
+              description: 'Channel name to subscribe to'
+          required: [channel]
+
+  unsubscribe:
+    address: unsubscribe
+    messages:
+      unsubscribe:
+        name: unsubscribe
+        title: Unsubscribe Message
+        payload:
+          type: object
+          properties:
+            channel:
+              type: string
+              description: 'Channel name to unsubscribe from'
+          required: [channel]
+
+  lightning_board_snapshot:
+    address: 'lightning_board_snapshot_{product_code}'
+    messages:
+      snapshot:
+        name: snapshot
+        title: OrderBook Snapshot
+        payload:
+          type: object
+          properties:
+            product_code:
+              type: string
+              description: "Market product code (example: `BTC_JPY`, `FX_BTC_JPY`, `ETH_BTC`)"
+            data:
+              $ref: '#/components/schemas/OrderBook'
+          required: [product_code, data]
+
+  lightning_board:
+    address: 'lightning_board_{product_code}'
+    messages:
+      diff:
+        name: diff
+        title: OrderBook Diff
+        payload:
+          type: object
+          properties:
+            product_code:
+              type: string
+              description: "Market product code (example: `BTC_JPY`, `FX_BTC_JPY`, `ETH_BTC`)"
+            data:
+              $ref: '#/components/schemas/OrderBook'
+          required: [product_code, data]
+
+  lightning_ticker:
+    address: 'lightning_ticker_{product_code}'
+    messages:
+      ticker:
+        name: ticker
+        title: Ticker Update
+        payload:
+          type: object
+          properties:
+            product_code:
+              type: string
+              description: "Market product code (example: `BTC_JPY`, `FX_BTC_JPY`, `ETH_BTC`)"
+            data:
+              $ref: '#/components/schemas/Ticker'
+          required: [product_code, data]
+
+  lightning_executions:
+    address: 'lightning_executions_{product_code}'
+    messages:
+      executions:
+        name: executions
+        title: Execution Updates
+        payload:
+          type: object
+          properties:
+            product_code:
+              type: string
+              description: "Market product code (example: `BTC_JPY`, `FX_BTC_JPY`, `ETH_BTC`)"
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Execution'
+          required: [product_code, data]
+
+  child_order_events:
+    address: child_order_events
+    messages:
+      events:
+        name: events
+        title: Child Order Events
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChildOrderEvent'
+
+  parent_order_events:
+    address: parent_order_events
+    messages:
+      events:
+        name: events
+        title: Parent Order Events
+        payload:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParentOrderEvent'
+
+operations:
+  sendAuth:
+    action: send
+    channel:
+      $ref: '#/channels/auth'
+    summary: 'Authentication (Auth) Request'
+    description: |
+      Sends an authentication request for subscribing to Private channels.
+      Send authentication parameters including timestamp, nonce, and signature corresponding to your API key.
+      When authentication is successful, the server returns `true` (in Socket.IO, check the error in the callback argument).
+
+  sendSubscribe:
+    action: send
+    channel:
+      $ref: '#/channels/subscribe'
+    summary: 'Subscribe Request'
+    description: |
+      Starts subscribing to the specified channel name.
+      In JSON-RPC, specify `{ channel: "<channel_name>" }` in params, and `true` is returned on success.
+      In Socket.IO, pass the channel name as a string argument and check for errors in the callback.
+
+  sendUnsubscribe:
+    action: send
+    channel:
+      $ref: '#/channels/unsubscribe'
+    summary: 'Unsubscribe Request'
+    description: |
+      Cancels subscription to the specified channel name.
+      In JSON-RPC, specify `{ channel: "<channel_name>" }` in params, and `true` is returned on success.
+      In Socket.IO, pass the channel name as a string argument and check for errors in the callback.
+
+  receiveOrderBook:
+    action: receive
+    channel:
+      $ref: '#/channels/lightning_board_snapshot'
+    summary: 'Order Book Snapshot'
+    description: |
+      Delivers a snapshot of the order book.
+      Delivery frequency is limited for efficiency reasons. For frequent updates, use the order book diff channel.
+      The order of the `asks` and `bids` arrays is not guaranteed, so sort them as needed.
+
+  receiveOrderBookDiff:
+    action: receive
+    channel:
+      $ref: '#/channels/lightning_board'
+    summary: 'Order Book Diff'
+    description: |
+      Delivers differences when order book is updated.
+      `size` is the new total quantity at the given price. When an order is removed from the book, size=0 is delivered.
+      Executions in the matching (auction) are delivered as a price=0 difference.
+
+  receiveTicker:
+    action: receive
+    channel:
+      $ref: '#/channels/lightning_ticker'
+    summary: 'Ticker'
+    description: |
+      Delivered when Ticker information is updated.
+      Delivery frequency is limited for practical reasons. For accurate latest transaction prices, use the execution channel.
+
+  receiveExecutions:
+    action: receive
+    channel:
+      $ref: '#/channels/lightning_executions'
+    summary: 'Executions'
+    description: |
+      Delivered when executions (trades) occur. Multiple executions may be delivered together.
+      `side` is the buy/sell direction of the taker order. For executions by matching (auction), `side` will be an empty string.
+
+  receiveChildOrderEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/child_order_events'
+    summary: 'Child Order Events'
+    description: |
+      Delivers events related to the user's spot orders (authentication required for subscription).
+      Event types: `ORDER`, `ORDER_FAILED`, `CANCEL`, `CANCEL_FAILED`, `EXECUTION`, `EXPIRE`.
+
+  receiveParentOrderEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/parent_order_events'
+    summary: 'Parent Order Events'
+    description: |
+      Delivers events related to the user's parent orders (special orders) (authentication required for subscription).
+      Event types: `ORDER`, `ORDER_FAILED`, `CANCEL`, `TRIGGER`, `COMPLETE`, `EXPIRE`.
+
+components:
+  securitySchemes:
+    bitflyerAuth:
+      type: userPassword
+      description: |
+        bitFlyer Lightning API key authentication. Used for subscribing to Private channels.
+        After connection, send an authentication message containing the signature generated from your API key and API Secret to complete authentication.
+
+  schemas:
+    QuoteEntry:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 'Price'
+        size:
+          type: number
+          description: 'Quantity'
+      required: [price, size]
+      description: 'Order information on the board (Price and Quantity)'
+
+    OrderBook:
+      type: object
+      properties:
+        mid_price:
+          type: number
+          description: 'Mid Price (Average of Best Bid and Best Ask)'
+        bids:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteEntry'
+          description: 'Buy order list'
+        asks:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuoteEntry'
+          description: 'Sell order list'
+      required: [mid_price, bids, asks]
+      description: 'Order information (Snapshot/Diff of Order Book)'
+
+    Ticker:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: 'Product Code'
+        timestamp:
+          type: string
+          format: date-time
+          description: 'Time (ISO 8601)'
+        state:
+          type: string
+          description: 'Market State'
+        tick_id:
+          type: integer
+          description: 'Tick ID'
+        best_bid:
+          type: number
+          description: 'Best Bid (Best Buy Quote)'
+        best_ask:
+          type: number
+          description: 'Best Ask (Best Sell Quote)'
+        best_bid_size:
+          type: number
+          description: 'Best Bid Quantity'
+        best_ask_size:
+          type: number
+          description: 'Best Ask Quantity'
+        total_bid_depth:
+          type: number
+          description: 'Total Buy Quantity'
+        total_ask_depth:
+          type: number
+          description: 'Total Sell Quantity'
+        market_bid_size:
+          type: number
+          description: 'Market Buy Quantity in Matching'
+        market_ask_size:
+          type: number
+          description: 'Market Sell Quantity in Matching'
+        ltp:
+          type: number
+          description: 'Last Trade Price (Last Trade Price)'
+        volume:
+          type: number
+          description: 'Transaction Volume in the Last 24 Hours'
+        volume_by_product:
+          type: number
+          description: 'Transaction Volume in the Last 24 Hours (Product-by-Product)'
+      required: [product_code, timestamp, state, tick_id, best_bid, best_ask, best_bid_size, best_ask_size, total_bid_depth, total_ask_depth, market_bid_size, market_ask_size, ltp, volume, volume_by_product]
+      description: 'Ticker Information'
+
+    Execution:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 'Execution ID'
+        side:
+          type: string
+          description: 'Buy/Sell Direction (`BUY`/`SELL`, Empty String for Matching)'
+        price:
+          type: number
+          description: 'Execution Price'
+        size:
+          type: number
+          description: 'Execution Quantity'
+        exec_date:
+          type: string
+          format: date-time
+          description: 'Execution Time'
+        buy_child_order_acceptance_id:
+          type: string
+          description: 'Buy Order Acceptance ID'
+        sell_child_order_acceptance_id:
+          type: string
+          description: 'Sell Order Acceptance ID'
+      required: [id, side, price, size, exec_date, buy_child_order_acceptance_id, sell_child_order_acceptance_id]
+      description: 'Execution Details'
+
+    ChildOrderEvent:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: 'Product Code'
+        child_order_id:
+          type: string
+          description: 'Child Order ID'
+        child_order_acceptance_id:
+          type: string
+          description: 'Child Order Acceptance ID'
+        event_date:
+          type: string
+          format: date-time
+          description: 'Event Occurrence Time'
+        event_type:
+          type: string
+          description: 'Event Type (`ORDER`, `ORDER_FAILED`, `CANCEL`, `CANCEL_FAILED`, `EXECUTION`, `EXPIRE`)'
+        child_order_type:
+          type: string
+          description: 'Child Order Type (Example: LIMIT, MARKET)'
+        expire_date:
+          type: string
+          format: date-time
+          description: 'Order Validity Period'
+        reason:
+          type: string
+          description: 'Reason for Order Failure'
+        exec_id:
+          type: integer
+          description: 'Execution ID (EXECUTION Event)'
+        side:
+          type: string
+          description: 'Buy/Sell Type (BUY/SELL)'
+        price:
+          type: number
+          description: 'Price'
+        size:
+          type: number
+          description: 'Quantity'
+        commission:
+          type: number
+          description: 'Commission'
+        sfd:
+          type: number
+          description: 'SFD Deduction Amount'
+        outstanding_size:
+          type: number
+          description: 'Unexecuted Quantity'
+      required: [product_code, child_order_id, child_order_acceptance_id, event_date, event_type]
+      description: 'Child Order Event Information'
+
+    ParentOrderEvent:
+      type: object
+      properties:
+        product_code:
+          type: string
+          description: 'Product Code'
+        parent_order_id:
+          type: string
+          description: 'Parent Order ID'
+        parent_order_acceptance_id:
+          type: string
+          description: 'Parent Order Acceptance ID'
+        event_date:
+          type: string
+          format: date-time
+          description: 'Event Occurrence Time'
+        event_type:
+          type: string
+          description: 'Event Type (`ORDER`, `ORDER_FAILED`, `CANCEL`, `TRIGGER`, `COMPLETE`, `EXPIRE`)'
+        parent_order_type:
+          type: string
+          description: 'Parent Order Type (Example: IFD, OCO, IFDOCO, STOP)'
+        reason:
+          type: string
+          description: 'Reason for Parent Order Failure'
+        child_order_type:
+          type: string
+          description: 'Child Order Type (Example: LIMIT, MARKET)'
+        parameter_index:
+          type: integer
+          description: 'Child Order Number'
+        child_order_acceptance_id:
+          type: string
+          description: 'Child Order Acceptance ID'
+        side:
+          type: string
+          description: 'Buy/Sell Type (BUY/SELL)'
+        price:
+          type: number
+          description: 'Price'
+        size:
+          type: number
+          description: 'Quantity'
+        expire_date:
+          type: string
+          format: date-time
+          description: 'Order Validity Period'
+      required: [product_code, parent_order_id, parent_order_acceptance_id, event_date, event_type]
+      description: 'Parent Order Event Information'

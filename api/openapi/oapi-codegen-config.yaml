@@ -1,0 +1,9 @@
+package: http
+generate:
+  models: true
+  client: true
+  strict-server: true
+output: client/http/client.gen.go
+additional-imports:
+  - alias: "oruntime"
+    package: "github.com/oapi-codegen/runtime"

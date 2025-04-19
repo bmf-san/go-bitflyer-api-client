@@ -1,0 +1,14 @@
+version: "2"
+
+run:
+  timeout: 2m
+
+linters:
+  enable:
+    - govet
+    - gosec
+    - errcheck
+    - staticcheck
+
+exclude-rules:
+  - path: ^client/http/client\.go$
