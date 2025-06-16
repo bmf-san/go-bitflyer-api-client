@@ -3,7 +3,7 @@ module go-bitflyer-api-client
 go 1.24.1
 
 require (
-	github.com/lerenn/asyncapi-codegen v0.45.3
+	github.com/lerenn/asyncapi-codegen v0.46.2
 	github.com/oapi-codegen/runtime v1.1.1
 	nhooyr.io/websocket v1.8.10
 )
