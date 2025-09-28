@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bmf-san/go-bitflyer-api-client/v1/client/auth"
+	"github.com/bmf-san/go-bitflyer-api-client/client/auth"
 )
 
 func TestNewAuthenticatedClient(t *testing.T) {

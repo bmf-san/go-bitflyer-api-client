@@ -2,9 +2,9 @@ module example
 
 go 1.25.0
 
-replace github.com/bmf-san/go-bitflyer-api-client/v1 => ../..
+replace github.com/bmf-san/go-bitflyer-api-client => ../..
 
-require github.com/bmf-san/go-bitflyer-api-client/v1 v1.0.0-00010101000000-000000000000
+require github.com/bmf-san/go-bitflyer-api-client v1.0.0-00010101000000-000000000000
 
 require (
 	github.com/lerenn/asyncapi-codegen v0.45.3 // indirect

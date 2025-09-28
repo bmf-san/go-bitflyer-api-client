@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bmf-san/go-bitflyer-api-client/v1/client/websocket"
+	"github.com/bmf-san/go-bitflyer-api-client/client/websocket"
 )
 
 func main() {
