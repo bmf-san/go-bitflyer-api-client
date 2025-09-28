@@ -26,7 +26,7 @@ bitFlyer Lightning API client for Go. Supports both REST API and WebSocket (real
 ## Installation
 
 ```bash
-go get github.com/bmf-san/go-bitflyer-api-client/v1
+go get github.com/bmf-san/go-bitflyer-api-client
 ```
 
 ## Usage
@@ -39,8 +39,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/bmf-san/go-bitflyer-api-client/v1/client/auth"
-    "github.com/bmf-san/go-bitflyer-api-client/v1/client/http"
+    "github.com/bmf-san/go-bitflyer-api-client/client/auth"
+    "github.com/bmf-san/go-bitflyer-api-client/client/http"
 )
 
 func main() {
@@ -96,7 +96,7 @@ import (
     "syscall"
     "time"
 
-    "github.com/bmf-san/go-bitflyer-api-client/v1/client/websocket"
+    "github.com/bmf-san/go-bitflyer-api-client/client/websocket"
 )
 
 func main() {

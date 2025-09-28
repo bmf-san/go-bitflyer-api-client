@@ -1,4 +1,4 @@
-module github.com/bmf-san/go-bitflyer-api-client/v1
+module github.com/bmf-san/go-bitflyer-api-client
 
 go 1.25.0
 
