@@ -34,3 +34,27 @@ example-websocket: ## Run WebSocket client example code.
 
 .PHONY: example
 example: example-http ## Run example code (HTTP client only).
+
+.PHONY: build
+build: ## Build the library (verify compilation)
+	@echo "Building go-bitflyer-api-client..."
+	@go build ./...
+	@echo "Build successful"
+
+.PHONY: deps
+deps: ## Update dependencies
+	@echo "Updating dependencies..."
+	@go mod tidy
+	@go mod download
+
+.PHONY: clean
+clean: ## Clean generated files
+	@echo "Cleaning generated files..."
+	@rm -f client/http/client.gen.go
+	@rm -f client/websocket/client.gen.go
+
+.PHONY: help
+help: ## Show this help message
+	@echo "Available commands:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
