@@ -26,7 +26,7 @@ bitFlyer Lightning API client for Go. Supports both REST API and WebSocket (real
 ## Installation
 
 ```bash
-go get github.com/bmf-san/go-bitflyer-api-client
+go get github.com/bmf-san/go-bitflyer-api-client/v1
 ```
 
 ## Usage
@@ -39,8 +39,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/bmf-san/go-bitflyer-api-client/client/auth"
-    "github.com/bmf-san/go-bitflyer-api-client/client/http"
+    "github.com/bmf-san/go-bitflyer-api-client/v1/client/auth"
+    "github.com/bmf-san/go-bitflyer-api-client/v1/client/http"
 )
 
 func main() {
@@ -96,7 +96,7 @@ import (
     "syscall"
     "time"
 
-    "github.com/bmf-san/go-bitflyer-api-client/client/websocket"
+    "github.com/bmf-san/go-bitflyer-api-client/v1/client/websocket"
 )
 
 func main() {
@@ -237,46 +237,33 @@ func main() {
 ## Development
 
 ### Prerequisites
-- Go 1.24 or later
+- Go 1.25.0 or later
 - make
 
-### Install Development Tools
+### Quick Start
 ```bash
+# Install development tools
 make install-tools
-```
-This will install:
-- golangci-lint v2.0.2
-- oapi-codegen (latest)
-- asyncapi-codegen (latest)
 
-### Generate Code
-```bash
+# Generate code from specifications
 make generate
-```
 
-### Run Tests
-```bash
+# Run tests
 make test
-```
 
-### Run Linter
-```bash
+# Run linter
 make lint
-```
 
-### Run Examples
-```bash
+# Run examples
 make example
 ```
 
 ## CI/CD
-This project uses GitHub Actions for continuous integration and deployment:
+This project uses GitHub Actions for continuous integration:
 - Automated testing and linting on push and pull requests
-  - Go 1.24
+  - Go 1.25.x
   - golangci-lint v2.0.2
-- Automated releases with the same CI steps when version tags are pushed
-  - Tests and linting are run before creating releases
-  - Release notes are automatically generated
+- Manual releases with version tags
 
 # Contribution
 We welcome issues and pull requests at any time.

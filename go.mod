@@ -1,6 +1,6 @@
-module go-bitflyer-api-client
+module github.com/bmf-san/go-bitflyer-api-client/v1
 
-go 1.24.1
+go 1.25.0
 
 require (
 	github.com/lerenn/asyncapi-codegen v0.45.3

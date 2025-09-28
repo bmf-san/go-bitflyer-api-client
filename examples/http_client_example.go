@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"log"
 
-	"go-bitflyer-api-client/client/auth"
-	"go-bitflyer-api-client/client/http"
+	"github.com/bmf-san/go-bitflyer-api-client/v1/client/auth"
+	"github.com/bmf-san/go-bitflyer-api-client/v1/client/http"
 )
 
 func main() {

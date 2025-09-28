@@ -9,6 +9,3 @@ linters:
     - gosec
     - errcheck
     - staticcheck
-
-exclude-rules:
-  - path: ^client/http/client\.go$

@@ -3,7 +3,7 @@ package http
 import (
 	"net/http"
 
-	"go-bitflyer-api-client/client/auth"
+	"github.com/bmf-san/go-bitflyer-api-client/v1/client/auth"
 )
 
 // AuthenticatedClient wraps the generated client with authentication
