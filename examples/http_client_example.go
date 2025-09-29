@@ -5,16 +5,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/bmf-san/go-bitflyer-api-client/client/auth"
 	"github.com/bmf-san/go-bitflyer-api-client/client/http"
 )
 
 func main() {
-	// Create credentials (replace with your actual API credentials)
+	// Load credentials from environment variables or use defaults
 	credentials := auth.APICredentials{
-		APIKey:    "your-api-key",
-		APISecret: "your-api-secret",
+		APIKey:    getEnvOrDefault("BITFLYER_API_KEY", "your-api-key"),
+		APISecret: getEnvOrDefault("BITFLYER_API_SECRET", "your-api-secret"),
+	}
+
+	// Show which credential source is being used
+	if os.Getenv("BITFLYER_API_KEY") != "" {
+		fmt.Println("Using API credentials from environment variables")
+	} else {
+		fmt.Println("Using default API credentials (set BITFLYER_API_KEY and BITFLYER_API_SECRET environment variables)")
 	}
 
 	// Create authenticated client
@@ -33,7 +41,15 @@ func main() {
 	if markets.JSON200 != nil {
 		fmt.Println("Available markets:")
 		for _, market := range *markets.JSON200 {
-			fmt.Printf("- %v (%v)\n", market.ProductCode, market.MarketType)
+			productCode := "N/A"
+			marketType := "N/A"
+			if market.ProductCode != nil {
+				productCode = *market.ProductCode
+			}
+			if market.MarketType != nil {
+				marketType = string(*market.MarketType)
+			}
+			fmt.Printf("- %s (%s)\n", productCode, marketType)
 		}
 	}
 
@@ -47,8 +63,16 @@ func main() {
 
 	if boardState.JSON200 != nil {
 		fmt.Printf("\nBTC_JPY Board State:\n")
-		fmt.Printf("Health: %v\n", boardState.JSON200.Health)
-		fmt.Printf("State: %v\n", boardState.JSON200.State)
+		health := "N/A"
+		state := "N/A"
+		if boardState.JSON200.Health != nil {
+			health = string(*boardState.JSON200.Health)
+		}
+		if boardState.JSON200.State != nil {
+			state = string(*boardState.JSON200.State)
+		}
+		fmt.Printf("Health: %s\n", health)
+		fmt.Printf("State: %s\n", state)
 	}
 
 	// Get ticker for BTC_JPY (public API) - Using raw response
@@ -87,4 +111,12 @@ func main() {
 			}
 		}
 	}
+}
+
+// getEnvOrDefault returns the environment variable value or a default value if not set
+func getEnvOrDefault(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
 }
