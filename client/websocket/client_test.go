@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"nhooyr.io/websocket"
+	"github.com/coder/websocket"
 )
 
 // Test for creating AppController - passing nil broker controller
