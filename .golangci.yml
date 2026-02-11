@@ -12,4 +12,12 @@ linters:
 
 linters-settings:
   staticcheck:
-    checks: ["all", "-SA1019"]
+    checks:
+      - "all"
+      - "-SA1019"
+
+issues:
+  exclude-rules:
+    - linters:
+        - staticcheck
+      text: "SA1019.*deprecated"
