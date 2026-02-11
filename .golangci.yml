@@ -8,3 +8,4 @@ linters:
     - govet
     - gosec
     - errcheck
+    - staticcheck
