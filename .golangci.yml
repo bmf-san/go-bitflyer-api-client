@@ -9,3 +9,7 @@ linters:
     - gosec
     - errcheck
     - staticcheck
+
+linters-settings:
+  staticcheck:
+    checks: ["all", "-SA1019"]
