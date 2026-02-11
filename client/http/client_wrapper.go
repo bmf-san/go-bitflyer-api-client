@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/bmf-san/go-bitflyer-api-client/client/auth"
@@ -8,8 +9,9 @@ import (
 
 // AuthenticatedClient wraps the generated client with authentication
 type AuthenticatedClient struct {
-	client *ClientWithResponses
-	signer *auth.Signer
+	client     *ClientWithResponses
+	signer     *auth.Signer
+	optionErr  error // Stores error from options
 }
 
 // AuthOption is a function that modifies the authenticated client
@@ -29,7 +31,7 @@ func WithCustomHTTPClient(httpClient *http.Client) AuthOption {
 		var err error
 		c.client, err = NewClientWithResponses("https://api.bitflyer.com", WithHTTPClient(customClient))
 		if err != nil {
-			panic(err) // TODO: handle this better
+			c.optionErr = fmt.Errorf("failed to create client with custom HTTP client: %w", err)
 		}
 	}
 }
@@ -65,6 +67,11 @@ func NewAuthenticatedClient(credentials auth.APICredentials, baseURL string, opt
 	// Apply additional options
 	for _, opt := range opts {
 		opt(ac)
+	}
+
+	// Check if any option returned an error
+	if ac.optionErr != nil {
+		return nil, ac.optionErr
 	}
 
 	return ac, nil
