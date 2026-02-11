@@ -143,26 +143,36 @@ func (c *Client) Close(ctx context.Context) {
 
 // OnTicker sets a callback to receive ticker information
 func (c *Client) OnTicker(handler func(TickerMessage)) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.tickerHandler = handler
 }
 
 // OnExecutions sets a callback to receive execution information
 func (c *Client) OnExecutions(handler func(ExecutionsMessage)) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.executionsHandler = handler
 }
 
 // OnBoard sets a callback to receive order book information
 func (c *Client) OnBoard(handler func(BoardMessage)) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.boardHandler = handler
 }
 
 // OnBoardSnapshot sets a callback to receive order book snapshots
 func (c *Client) OnBoardSnapshot(handler func(BoardSnapshotMessage)) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.boardSnapshotHandler = handler
 }
 
 // OnOrderEvents sets a callback to receive order events
 func (c *Client) OnOrderEvents(handler func(OrderEventMessage)) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.privateOrderHandler = handler
 }
 
@@ -297,23 +307,32 @@ func (c *Client) handleMessage(ctx context.Context, rawMsg json.RawMessage) {
 		return
 	}
 
+	// Get handlers under mutex protection
+	c.mu.Lock()
+	tickerHandler := c.tickerHandler
+	executionsHandler := c.executionsHandler
+	boardHandler := c.boardHandler
+	boardSnapshotHandler := c.boardSnapshotHandler
+	privateOrderHandler := c.privateOrderHandler
+	c.mu.Unlock()
+
 	// Call the appropriate handler based on the channel
 	if strings.HasPrefix(channel, "lightning_ticker_") {
-		if c.tickerHandler != nil && params["message"] != nil {
+		if tickerHandler != nil && params["message"] != nil {
 			var ticker TickerMessage
 			if err := json.Unmarshal(params["message"], &ticker); err == nil {
-				c.tickerHandler(ticker)
+				tickerHandler(ticker)
 			}
 		}
 	} else if strings.HasPrefix(channel, "lightning_executions_") {
-		if c.executionsHandler != nil && params["message"] != nil {
+		if executionsHandler != nil && params["message"] != nil {
 			var executions ExecutionsMessage
 			if err := json.Unmarshal(params["message"], &executions); err == nil {
-				c.executionsHandler(executions)
+				executionsHandler(executions)
 			}
 		}
 	} else if strings.HasPrefix(channel, "lightning_board_") && !strings.HasPrefix(channel, "lightning_board_snapshot_") {
-		if c.boardHandler != nil && params["message"] != nil {
+		if boardHandler != nil && params["message"] != nil {
 			// Extract product code from channel name (example: lightning_board_BTC_JPY -> BTC_JPY)
 			productCode := strings.TrimPrefix(channel, "lightning_board_")
 
@@ -325,11 +344,11 @@ func (c *Client) handleMessage(ctx context.Context, rawMsg json.RawMessage) {
 					ProductCode: productCode,
 					Data:        boardData,
 				}
-				c.boardHandler(board)
+				boardHandler(board)
 			}
 		}
 	} else if strings.HasPrefix(channel, "lightning_board_snapshot_") {
-		if c.boardSnapshotHandler != nil && params["message"] != nil {
+		if boardSnapshotHandler != nil && params["message"] != nil {
 			// Extract product code from channel name (example: lightning_board_snapshot_BTC_JPY -> BTC_JPY)
 			productCode := strings.TrimPrefix(channel, "lightning_board_snapshot_")
 
@@ -341,14 +360,14 @@ func (c *Client) handleMessage(ctx context.Context, rawMsg json.RawMessage) {
 					ProductCode: productCode,
 					Data:        boardData,
 				}
-				c.boardSnapshotHandler(snapshot)
+				boardSnapshotHandler(snapshot)
 			}
 		}
 	} else if channel == "child_order_events" || channel == "parent_order_events" {
-		if c.privateOrderHandler != nil && params["message"] != nil {
+		if privateOrderHandler != nil && params["message"] != nil {
 			var event OrderEventMessage
 			if err := json.Unmarshal(params["message"], &event); err == nil {
-				c.privateOrderHandler(event)
+				privateOrderHandler(event)
 			}
 		}
 	}
