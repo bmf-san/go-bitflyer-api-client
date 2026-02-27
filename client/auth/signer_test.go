@@ -38,6 +38,17 @@ func TestSign(t *testing.T) {
 			body:    `{"product_code":"BTC_JPY","child_order_type":"LIMIT","side":"BUY","price":30000,"size":0.1}`,
 			wantErr: false,
 		},
+		{
+			name: "valid signature with GET and query params",
+			credentials: APICredentials{
+				APIKey:    "key123",
+				APISecret: "secret123",
+			},
+			method:  "GET",
+			path:    "/v1/me/getpositions?product_code=FX_BTC_JPY",
+			body:    "",
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -95,15 +106,45 @@ func TestSignature_TimestampFormat(t *testing.T) {
 		t.Error("ACCESS-TIMESTAMP header is empty")
 	}
 
-	// Verify timestamp can be parsed as Unix milliseconds
+	// Verify timestamp can be parsed as Unix seconds (not milliseconds)
 	timestampInt, err := strconv.ParseInt(timestamp, 10, 64)
 	if err != nil {
-		t.Errorf("timestamp is not a valid Unix millisecond: %v", err)
+		t.Errorf("timestamp is not a valid Unix second: %v", err)
 	}
 
-	// Verify timestamp is within 1 minute of current time
-	now := time.Now().UnixMilli()
-	if timestampInt < now-60000 || timestampInt > now+60000 {
-		t.Errorf("timestamp %d is not within 1 minute of current time %d", timestampInt, now)
+	// Verify timestamp is within 60 seconds of current time
+	// bitFlyer requires ACCESS-TIMESTAMP in seconds, not milliseconds
+	now := time.Now().Unix()
+	if timestampInt < now-60 || timestampInt > now+60 {
+		t.Errorf("timestamp %d is not within 60 seconds of current Unix time %d", timestampInt, now)
+	}
+}
+
+// TestSignature_QueryParamsIncluded verifies that query parameters are included
+// in the signed message. Two requests to the same path but different query strings
+// must produce different signatures.
+func TestSignature_QueryParamsIncluded(t *testing.T) {
+	signer := NewSigner(APICredentials{
+		APIKey:    "test-key",
+		APISecret: "test-secret",
+	})
+
+	req1, _ := http.NewRequest("GET", "https://api.bitflyer.com/v1/me/getpositions?product_code=BTC_JPY", nil)
+	req2, _ := http.NewRequest("GET", "https://api.bitflyer.com/v1/me/getpositions?product_code=FX_BTC_JPY", nil)
+
+	if err := signer.Sign(req1); err != nil {
+		t.Fatalf("Sign() req1 failed: %v", err)
+	}
+	// Use same timestamp header to isolate the query string difference
+	ts := req1.Header.Get("ACCESS-TIMESTAMP")
+	req2.Header.Set("ACCESS-TIMESTAMP", ts)
+	if err := signer.Sign(req2); err != nil {
+		t.Fatalf("Sign() req2 failed: %v", err)
+	}
+
+	sig1 := req1.Header.Get("ACCESS-SIGN")
+	sig2 := req2.Header.Get("ACCESS-SIGN")
+	if sig1 == sig2 {
+		t.Error("Expected different signatures for different query params, but got the same signature")
 	}
 }
