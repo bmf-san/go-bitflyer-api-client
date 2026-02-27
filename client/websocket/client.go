@@ -181,18 +181,20 @@ func (c *Client) Auth(ctx context.Context, apiKey, apiSecret string) error {
 	// Get current timestamp (using Unix timestamp as int64)
 	unixTime := time.Now().Unix()
 
-	// Calculate signature
+	// Generate nonce first so the same value is used in both the signature and the params.
+	nonce := fmt.Sprintf("%d", c.getNextID())
+
+	// Calculate signature: HMAC-SHA256(api_secret, timestamp + nonce)
 	h := hmac.New(sha256.New, []byte(apiSecret))
 	timeStr := strconv.FormatInt(unixTime, 10)
-	h.Write([]byte(timeStr))
-	h.Write([]byte(apiKey))
+	h.Write([]byte(timeStr + nonce))
 	signature := hex.EncodeToString(h.Sum(nil))
 
 	// Create authentication message
 	authParams := map[string]interface{}{
 		"api_key":   apiKey,
 		"timestamp": unixTime,
-		"nonce":     fmt.Sprintf("%d", c.getNextID()),
+		"nonce":     nonce,
 		"signature": signature,
 	}
 

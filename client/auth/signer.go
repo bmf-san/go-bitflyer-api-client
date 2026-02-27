@@ -31,9 +31,11 @@ func NewSigner(credentials APICredentials) *Signer {
 
 // Sign signs the HTTP request with the required authentication headers
 func (s *Signer) Sign(req *http.Request) error {
-	timestamp := time.Now().UnixMilli()
+	timestamp := time.Now().Unix() // bitFlyer requires Unix timestamp in SECONDS
 	method := req.Method
-	path := req.URL.Path
+	// RequestURI includes query string (e.g. /v1/me/getpositions?product_code=FX_BTC_JPY).
+	// bitFlyer requires the full path+query in the signed message.
+	path := req.URL.RequestURI()
 	body := ""
 
 	if req.Body != nil {
