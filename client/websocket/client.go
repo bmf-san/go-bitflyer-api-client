@@ -141,6 +141,16 @@ func (c *Client) Close(ctx context.Context) {
 	}
 }
 
+// Ping sends a WebSocket ping frame and waits for a pong response.
+// This can be called periodically to keep the connection alive through NAT
+// firewalls that drop idle TCP connections.
+func (c *Client) Ping(ctx context.Context) error {
+	if c.conn == nil {
+		return fmt.Errorf("websocket connection is not established")
+	}
+	return c.conn.Ping(ctx)
+}
+
 // OnTicker sets a callback to receive ticker information
 func (c *Client) OnTicker(handler func(TickerMessage)) {
 	c.mu.Lock()
