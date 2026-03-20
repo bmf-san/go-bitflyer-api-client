@@ -7,6 +7,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"net"
+	"net/http"
 	"strconv"
 	"strings"
 	"sync"
@@ -29,6 +31,7 @@ type Client struct {
 	boardHandler         func(BoardMessage)
 	boardSnapshotHandler func(BoardSnapshotMessage)
 	privateOrderHandler  func(OrderEventMessage)
+	receiveCancel        context.CancelFunc // stops the receiveMessages goroutine on Close
 }
 
 // JSON-RPC message structure
@@ -110,11 +113,29 @@ type OrderEventMessage struct {
 
 // NewClient creates a new WebSocket client
 func NewClient(ctx context.Context, wsURL string) (*Client, error) {
+	// Enable TCP keepalive so the OS sends keepalive probes every 30 seconds.
+	// This prevents VPS NAT firewalls from silently dropping idle TCP connections
+	// (typical NAT idle timeout: 30–60 minutes) during low-volatility periods when
+	// no ticker data arrives for extended periods.
+	netDialer := &net.Dialer{
+		KeepAlive: 30 * time.Second,
+	}
+	transport := &http.Transport{
+		DialContext: netDialer.DialContext,
+	}
+
 	// Connect to WebSocket
-	conn, _, err := websocket.Dial(ctx, wsURL, &websocket.DialOptions{})
+	conn, _, err := websocket.Dial(ctx, wsURL, &websocket.DialOptions{
+		HTTPClient: &http.Client{Transport: transport},
+	})
 	if err != nil {
 		return nil, fmt.Errorf("websocket connection error: %w", err)
 	}
+
+	// Use an independent context for the receive loop so it is not tied to the
+	// short-lived dial context (which expires after 30 s). The loop runs until
+	// Close() is called.
+	receiveCtx, receiveCancel := context.WithCancel(context.Background())
 
 	client := &Client{
 		conn:               conn,
@@ -122,16 +143,21 @@ func NewClient(ctx context.Context, wsURL string) (*Client, error) {
 		jsonRPCID:          1,
 		subscribedChannels: make(map[string]struct{}),
 		messageHandlers:    make(map[string]MessageHandler),
+		receiveCancel:      receiveCancel,
 	}
 
 	// Start message receiving loop
-	go client.receiveMessages(ctx)
+	go client.receiveMessages(receiveCtx)
 
 	return client, nil
 }
 
 // Close closes the WebSocket connection
 func (c *Client) Close(ctx context.Context) {
+	// Stop the receive goroutine before closing the connection.
+	if c.receiveCancel != nil {
+		c.receiveCancel()
+	}
 	if c.conn != nil {
 		err := c.conn.Close(websocket.StatusNormalClosure, "client closed")
 		if err != nil {
