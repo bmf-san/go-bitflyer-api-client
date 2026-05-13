@@ -71,10 +71,10 @@ func TestNewClient_Success(t *testing.T) {
 			t.Fatalf("Failed to upgrade connection: %v", err)
 		}
 		defer func() {
-			err := c.Close(websocket.StatusNormalClosure, "test completed")
-			if err != nil {
-				t.Logf("Failed to close connection: %v", err)
-			}
+			// Close errors are informational only; using t.Logf here would race
+			// with the test runtime because this defer can fire after the test has
+			// returned (see Go race detector reports).
+			_ = c.Close(websocket.StatusNormalClosure, "test completed")
 		}()
 		// Test connection success only
 	}))
@@ -106,10 +106,10 @@ func TestNewClient_Timeout(t *testing.T) {
 			return
 		}
 		defer func() {
-			err := c.Close(websocket.StatusNormalClosure, "test completed")
-			if err != nil {
-				t.Logf("Failed to close connection: %v", err)
-			}
+			// Close errors are informational only; using t.Logf here would race
+			// with the test runtime because this defer can fire after the test has
+			// returned (see Go race detector reports).
+			_ = c.Close(websocket.StatusNormalClosure, "test completed")
 		}()
 	}))
 	defer server.Close()
@@ -333,10 +333,10 @@ func TestAuth_InvalidCredentials(t *testing.T) {
 			t.Fatalf("Failed to upgrade connection: %v", err)
 		}
 		defer func() {
-			err := c.Close(websocket.StatusNormalClosure, "test completed")
-			if err != nil {
-				t.Logf("Failed to close connection: %v", err)
-			}
+			// Close errors are informational only; using t.Logf here would race
+			// with the test runtime because this defer can fire after the test has
+			// returned (see Go race detector reports).
+			_ = c.Close(websocket.StatusNormalClosure, "test completed")
 		}()
 		// After connection, do nothing
 	}))
@@ -392,10 +392,10 @@ func TestContextCancellation(t *testing.T) {
 			return
 		}
 		defer func() {
-			err := c.Close(websocket.StatusNormalClosure, "test completed")
-			if err != nil {
-				t.Logf("Failed to close connection: %v", err)
-			}
+			// Close errors are informational only; using t.Logf here would race
+			// with the test runtime because this defer can fire after the test has
+			// returned (see Go race detector reports).
+			_ = c.Close(websocket.StatusNormalClosure, "test completed")
 		}()
 		// After connection is established, client waits for message from client forever
 		for {
