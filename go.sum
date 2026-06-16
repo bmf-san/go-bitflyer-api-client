@@ -10,8 +10,8 @@ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/juju/gnuflag v0.0.0-20171113085948-2ce1bb71843d/go.mod h1:2PavIy+JPciBPrBUjwbNvtwB6RQlve+hkpll6QSNmOE=
-github.com/lerenn/asyncapi-codegen v0.46.3 h1:lw1Iou6FTwMYZN6QiZNwsZl0o7sbWl5KZeT0j1GZTpU=
-github.com/lerenn/asyncapi-codegen v0.46.3/go.mod h1:vXZMzuQOCB4Owi2CzF08jMrs8XZ055+ulBrPODX3jzQ=
+github.com/lerenn/asyncapi-codegen v0.63.0 h1:Hv4qVBCV5+A++CY3KGbRYzoqP7jd99SKjYIMp8gN6pM=
+github.com/lerenn/asyncapi-codegen v0.63.0/go.mod h1:33tomtoUD5+eZI0WaxYziQJBsYWIejyAeh295DSlvTw=
 github.com/oapi-codegen/nullable v1.1.0 h1:eAh8JVc5430VtYVnq00Hrbpag9PFRGWLjxR1/3KntMs=
 github.com/oapi-codegen/nullable v1.1.0/go.mod h1:KUZ3vUzkmEKY90ksAmit2+5juDIhIZhfDl+0PwOQlFY=
 github.com/oapi-codegen/runtime v1.4.1 h1:9nwLoI+KrWxzbBcp0jO/R8uXqbik/HUyCvPeU68Y/qo=
